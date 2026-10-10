@@ -5,7 +5,7 @@
 * **Sistema:** Plataforma Fatec Zona Leste (cinco aplicações e banco unificado).
 
 
-* **Versão:** 1.0 (ou versão atual do repositório no semestre).
+* **Versão:** 1.0. 
 * **Base:** Especificação de requisitos (Apêndice C).
 
 
@@ -76,21 +76,11 @@ Esta seção justifica a estratégia. O foco é a quebra de autenticação entre
 
 | ID | Risco | Prob. | Impacto | Resposta (Teste) |
 | --- | --- | --- | --- | --- |
-| **R01** | Redirecionamento aberto malicioso usando host fora do catálogo (RF-03) | Média | Alto | Teste da validação do catálogo na resposta de login.
-
-|
-| **R02** | Sessão continuar viva num módulo após *logout* em outro (RF-02) | Alta | Alto | Teste de estados cruzados na requisição seguinte ao *logout*.
-
-|
-| **R03** | Enumeração de contas ativas através da mensagem de erro (RF-01) | Média | Médio | Validar se a recusa devolve estritamente a mensagem genérica.
-
-|
-| **R04** | Ataque de força bruta por ausência de CAPTCHA (RNF-11) | Alta | Alto | Testar o limite de requisições por IP/Conta na tela de login.
-
-|
-| **R05** | Sequestro de sessão com *cookie* vencido (RF-04) | Alta | Alto | Teste com relógio controlado avançando mais de 15 minutos.
-
-|
+| **R01** | Redirecionamento aberto malicioso usando host fora do catálogo (RF-03) | Média | Alto | Teste da validação do catálogo na resposta de login.|
+| **R02** | Sessão continuar viva num módulo após *logout* em outro (RF-02) | Alta | Alto | Teste de estados cruzados na requisição seguinte ao *logout*.|
+| **R03** | Enumeração de contas ativas através da mensagem de erro (RF-01) | Média | Médio | Validar se a recusa devolve estritamente a mensagem genérica.|
+| **R04** | Ataque de força bruta por ausência de CAPTCHA (RNF-11) | Alta | Alto | Testar o limite de requisições por IP/Conta na tela de login.|
+| **R05** | Sequestro de sessão com *cookie* vencido (RF-04) | Alta | Alto | Teste com relógio controlado avançando mais de 15 minutos.|
 
 ### 6. Estratégia por nível
 
@@ -171,33 +161,15 @@ A matriz amarra os requisitos (RF-01 a RF-04) aos riscos levantados na seção 5
 
 | ID | Requisito | Técnica | Pré-condição | Passos / Entrada | Resultado Esperado |
 | --- | --- | --- | --- | --- | --- |
-| **CT-01** | RF-01 | Partição | Nenhuma (Visitante) | Acessar o `www` e enviar credenciais válidas. | Sessão criada no `www`, *cookie* gerado em Ed25519 para a pessoa e perfil.
-
-|
-| **CT-02** | RF-01 | Suposição Erro | Nenhuma (Visitante) | Enviar e-mail inexistente, mas com formato válido. | Recusado com "mensagem genérica", sem distinguir que o e-mail não existe.
-
-|
-| **CT-03** | RF-01 | Limite | Nenhuma (Visitante) | Errar credenciais sequencialmente até exceder a trava. | Bloqueado pelo limitador de requisições, sem exibição de CAPTCHA.
-
-|
-| **CT-04** | RF-02 | Trans. Estado | Usuário logado em 2 módulos. | Acionar o botão "Sair" a partir do módulo `Aula`, tentar atualizar página no `TCC`. | *Cookie* apagado; na requisição seguinte o usuário é tratado como Visitante.
-
-|
-| **CT-05** | RF-03 | Partição | Nenhuma (Visitante) | Endereço de *login* no `www` com parâmetro apontando para o módulo `Administrativo`. | Redirecionamento aceito, acessa o módulo Autenticado.
-
-|
-| **CT-06** | RF-03 | Partição | Nenhuma (Visitante) | Parâmetro de destino para um *host* externo (ex: `[https://site-malicioso.com](https://site-malicioso.com)`). | Ação recusada; defesa contra redirecionamento aberto ativada.
-
-|
-| **CT-07** | RF-04 | Limite | Sessão viva (*cookie*). | O relógio do sistema de testes avança para 14 min e 50 s; usuário faz uma requisição. | Sessão mantida e *cookie* é **reemitido** devido à proximidade de vencimento.
-
-|
-| **CT-08** | RF-04 | Limite | Sessão viva (*cookie*). | Relógio avança para 15 min e 01 s sem requisições intermediárias. | *Cookie* vence; sessão é imediatamente derrubada na próxima chamada.
-
-|
-| **CT-09** | RF-04 | Trans. Estado | Sessão viva (*cookie*). | O módulo recebe requisição contendo um *cookie* válido pertencente a *outra* pessoa. | A sessão original é derrubada sempre.
-
-|
+| **CT-01** | RF-01 | Partição | Nenhuma (Visitante) | Acessar o `www` e enviar credenciais válidas. | Sessão criada no `www`, *cookie* gerado em Ed25519 para a pessoa e perfil.|
+| **CT-02** | RF-01 | Suposição Erro | Nenhuma (Visitante) | Enviar e-mail inexistente, mas com formato válido. | Recusado com "mensagem genérica", sem distinguir que o e-mail não existe.|
+| **CT-03** | RF-01 | Limite | Nenhuma (Visitante) | Errar credenciais sequencialmente até exceder a trava. | Bloqueado pelo limitador de requisições, sem exibição de CAPTCHA.|
+| **CT-04** | RF-02 | Trans. Estado | Usuário logado em 2 módulos. | Acionar o botão "Sair" a partir do módulo `Aula`, tentar atualizar página no `TCC`. | *Cookie* apagado; na requisição seguinte o usuário é tratado como Visitante.|
+| **CT-05** | RF-03 | Partição | Nenhuma (Visitante) | Endereço de *login* no `www` com parâmetro apontando para o módulo `Administrativo`. | Redirecionamento aceito, acessa o módulo Autenticado.|
+| **CT-06** | RF-03 | Partição | Nenhuma (Visitante) | Parâmetro de destino para um *host* externo (ex: `[https://site-malicioso.com](https://site-malicioso.com)`). | Ação recusada; defesa contra redirecionamento aberto ativada.|
+| **CT-07** | RF-04 | Limite | Sessão viva (*cookie*). | O relógio do sistema de testes avança para 14 min e 50 s; usuário faz uma requisição. | Sessão mantida e *cookie* é **reemitido** devido à proximidade de vencimento.|
+| **CT-08** | RF-04 | Limite | Sessão viva (*cookie*). | Relógio avança para 15 min e 01 s sem requisições intermediárias. | *Cookie* vence; sessão é imediatamente derrubada na próxima chamada.|
+| **CT-09** | RF-04 | Trans. Estado | Sessão viva (*cookie*). | O módulo recebe requisição contendo um *cookie* válido pertencente a *outra* pessoa. | A sessão original é derrubada sempre.|
 
 ### 13. Métricas e relatório
 
