@@ -11,19 +11,42 @@
 
 * **Contexto:** Planejamento de testes focados na camada de identidade, sessão, tempo e *logout* global da plataforma.
 
+* **Responsáveis:** Bruno Lira, Gabriel Andrew, Luiz Alvarenga, Rafael Melo.
+* **Ultima atualização**: 09/10/2026
+
 ### 2. Itens de teste
 
-* **Autenticação:** Emissão e validação do *cookie* de plataforma (assinatura Ed25519) emitido exclusivamente pelo módulo `www`.
+* **Módulo:** Autenticador
+
+**Itens:** Login automatizado, Login manual, Limitador de Tentativas, Redirecionamento pós-login, Emissão e validação do *cookie* de plataforma (assinatura Ed25519),
+cadastro por convite, recuperação de senha, provedor OAuth2.1 (fluxo de autorização), assinatura da impersonação, exclusividade de chave privada.
 
 
-* **Sessão e Tempo:** Validade do *cookie* (15 minutos) e lógica de reemissão por proximidade de vencimento.
+* **Módulo:** Administrativo
+
+**Itens:** Edição de pessoas e perfis, Edição de Cursos e Áreas, Convites, Leitura de Grades Curriculares, Importação de Turmas, 
+Catálogo de aplicativos, Conferência de Vínculos (falha fechada), API Interna, Início da Impersonação, Revogação de acessos,
+Gravação no domínio (apenas em admin_*).
 
 
-* **Logout Global:** Propagação do encerramento de sessão em todos os cinco módulos.
+* **Módulo:** TCC
 
+**Itens:** Ciclo do TCC (transições de estado), Leitura do cadastro geral (admin_*), Gravação no Cadastro Geral via API Interna,
+Recebimento de Revogação, Validação de Identidade (cookie com chave pública), Gravação no domínio (apenas em tcc_*) 
 
-* **Redirecionamento:** Validação de segurança contra redirecionamento aberto (baseado no catálogo).
+* **Módulo:** Aula
 
+**Itens:** Criação de atividade, entrega de arquivos, reenvio, data limite, elegilibidade de entrega, entrega em grupo, painel do professor,
+validação de identidade, gravação no domínio (apenas em aula_*).
+
+* **Módulo:** Minha Conta
+
+**Itens:** Gravação e Exibição de Dados Pessoais, Geração e Revogação de Chaves de Integração (MCP), Bloqueio de Dados Pessoais na impersonação,
+gravação no domínio (apenas em admin_*).
+
+* **Itens Transversais**: Esses itens dizem respeito a mais de um módulo específico, por isso foram adicionados em uma seção a parte
+
+**Itens**: contrato de cookie da plataforma, logout global, contrato de API interna, latência em cada módulo.
 
 
 ### 3. Escopo
