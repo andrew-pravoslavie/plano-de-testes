@@ -4,6 +4,7 @@
 ## 1 Identificação e contexto
 ## 2 Itens de teste
 ## 3 Escopo
+
 ## 4 Referências
 ## 5 Análise de risco do produto
 ## 6 Estratégia por nível
